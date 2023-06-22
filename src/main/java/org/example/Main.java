@@ -34,7 +34,6 @@ public class Main {
             }
             else if (choice == 3) {
                 System.out.println("Enter the Year : ");
-                ArrayList<TVShow> found = service.searchByReleaseYear(Integer.parseInt(in.nextLine()));
                 chooseShow(service, service.searchByReleaseYear(Integer.parseInt(in.nextLine())), in);
             }
             else if (choice == 4) {
@@ -76,11 +75,16 @@ public class Main {
             else if (choice == 9) {
                 System.out.println("Enter the Title : ");
                 ArrayList<TVShow> found = service.user.searchByTitle(in.nextLine());
-                System.out.println("Choose the Show : ");
-                for (int i = 0; i < found.size(); i++) {
-                    System.out.println(i + ". " + found.get(i));
+                if (found.isEmpty()) {
+                    System.out.println("There are no matching results.");
                 }
-                service.user.addToFavorites(found.get(Integer.parseInt(in.nextLine())-1));
+                else {
+                    System.out.println("Choose the Show : ");
+                    for (int i = 0; i < found.size(); i++) {
+                        System.out.println(i + ". " + found.get(i));
+                    }
+                    service.user.addToFavorites(found.get(Integer.parseInt(in.nextLine()) - 1));
+                }
             }
             else if (choice == 10) {
                 System.out.println("TV SHOWS : ");
@@ -130,7 +134,7 @@ public class Main {
                 }
                 service.addMovie(new Movie(title, genre, year, duration, rating, cast));
             }
-            else if (choice == 20) {
+            else if (choice == 13) {
                 service.logout();
                 service = authenticate(service, in);
                 if (service == null) {
@@ -175,7 +179,7 @@ public class Main {
                 System.out.println("Enter Password : ");
                 String password = in.nextLine();
                 if (password.length() < 8) {
-                    System.out.println("Your password must be more than 8 characters.");
+                    System.out.println("Your password must be more than 7 characters.");
                 }
                 else {
                     if (service.createAccount(username, password)) {
@@ -185,6 +189,9 @@ public class Main {
                             service.login(username, password);
                             System.out.println("You are logged in.");
                         }
+                    }
+                    else {
+                        System.out.println("This username is taken. Try another one.");
                     }
                 }
             }
@@ -226,7 +233,7 @@ public class Main {
         System.out.println("11. Add a TV Show");
         System.out.println("12. Add a Movie");
         System.out.println("========================================================");
-        System.out.println("20. Log out");
+        System.out.println("13. Log out");
         System.out.println("0. Exit");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
